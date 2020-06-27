@@ -6,7 +6,7 @@ A GNOME Shell extension for adding applications and activities to the dashboard 
 
 ## Requirements
 
-* GNOME Shell >= 3.30
+* GNOME Shell >= 3.36
 
 ## How to contribute
 
@@ -42,5 +42,5 @@ To create a ZIP file with the extension, just run:
 ./export-zip.sh
 ```
 
-This will create the file `apps-to-panel@leavitals.zip` with the extension, following the rules for publishing
+This will create the file `apps-to-panel@aunetx.zip` with the extension, following the rules for publishing
 at extensions.gnome.org.

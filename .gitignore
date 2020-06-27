@@ -7,3 +7,4 @@ build/*
 gschemas.compiled
 apps-to-panel@leavitals.zip
 *.mo
+apps-to-panel@*.zip

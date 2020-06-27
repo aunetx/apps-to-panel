@@ -10,14 +10,13 @@ prefix = get_option('prefix')
 datadir = join_paths (prefix, get_option('datadir'))
 schema_dir = join_paths(datadir, 'glib-2.0', 'schemas')
 
-extensions_dir = join_paths(prefix, 'share', 'gnome-shell', 'extensions', 'apps-to-panel@leavitals')
+extensions_dir = join_paths(prefix, 'share', 'gnome-shell', 'extensions', 'apps-to-panel@aunetx')
 
 install_data([
     'prefs.js',
     'dash.js',
     'extension.js',
-    'metadata.json',
-    'stylesheet.css'
+    'metadata.json'
   ],
   install_dir: extensions_dir
 )
