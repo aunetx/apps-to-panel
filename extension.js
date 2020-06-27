@@ -66,7 +66,7 @@ const ApplicationsIconMenu = new Lang.Class({
 
         this.add_actor(hbox);
 
-        Main.overview.viewSelector.connect('page-changed', () => {
+        this.pageChangedId = Main.overview.viewSelector.connect('page-changed', () => {
             if (Main.overview.viewSelector._activePage != Main.overview.viewSelector._workspacesPage) {
                 this.add_style_pseudo_class('overview');
             } else {
@@ -74,10 +74,10 @@ const ApplicationsIconMenu = new Lang.Class({
             }
         });
 
-        Main.overview.connect('hiding', Lang.bind(this, function() {
+        this.hidingId = Main.overview.connect('hiding', Lang.bind(this, function() {
             this.remove_style_pseudo_class('overview');
         }));
-        this.connect('button-press-event', Lang.bind(this, this._onShowAppsButtonToggled));
+        this.buttonPressEventId = this.connect('button-press-event', Lang.bind(this, this._onShowAppsButtonToggled));
     },
 
     _onShowAppsButtonToggled: function() {
@@ -120,6 +120,9 @@ const ApplicationsIconMenu = new Lang.Class({
     },
     destroy()
     {
+        Main.overview.viewSelector.disconnect(this.pageChangedId);
+        Main.overview.disconnect(this.hidingId);
+        this.disconnect(this.buttonPressEventId);
         this.parent();
     },
 });
@@ -157,7 +160,7 @@ const ActivitiesIconMenu = new Lang.Class({
 
         this.add_actor(hbox);
 
-        Main.overview.viewSelector.connect('page-changed', () => {
+        this.pageChangedId = Main.overview.viewSelector.connect('page-changed', () => {
             if (Main.overview.viewSelector._activePage == Main.overview.viewSelector._workspacesPage) {
                 this.add_style_pseudo_class('overview');
             } else {
@@ -165,11 +168,11 @@ const ActivitiesIconMenu = new Lang.Class({
             }
         });
 
-        Main.overview.connect('hiding', Lang.bind(this, function() {
+        this.hidingId = Main.overview.connect('hiding', Lang.bind(this, function() {
             this.remove_style_pseudo_class('overview');
         }));
 
-        this.connect('button-press-event', Lang.bind(this, this._onShowActivitiesButtonToggled));
+        this.buttonPressEventId = this.connect('button-press-event', Lang.bind(this, this._onShowActivitiesButtonToggled));
     },
 
     _onShowActivitiesButtonToggled: function() {
@@ -196,6 +199,9 @@ const ActivitiesIconMenu = new Lang.Class({
 
     destroy()
     {
+        Main.overview.viewSelector.disconnect(this.pageChangedId);
+        Main.overview.disconnect(this.hidingId);
+        this.disconnect(this.buttonPressEventId);
         this.parent();
     }
 });
@@ -237,24 +243,46 @@ function init()
 
 function enable()
 {
-    this.activities.container.hide();
+    let pref_applications_view = Prefs.get_applications_view();
+    let pref_activities_view = Prefs.get_activities_view();
 
+    this.activities.container.hide();
     this.dash.hideShowAppsButton();
 
-    this.showAppsButton = new ApplicationsIconMenu();
-    this.workspacesButton = new ActivitiesIconMenu();
+    if (pref_applications_view != 'hide') {
+        this.showAppsButton = new ApplicationsIconMenu();
+        Main.panel.addToStatusArea('applicationsiconmenu', this.showAppsButton, 0, 'left');
+    }
+    else {
+        this.showAppsButton = null;
+    }
 
-    Main.overview.viewSelector._animateIn = _animateIn;
-    Main.overview.viewSelector._animateOut = _animateOut;
+    if (pref_activities_view != 'hide') {
+        this.workspacesButton = new ActivitiesIconMenu();
+        Main.panel.addToStatusArea('activitiesiconmenu', this.workspacesButton, 1, 'left');
+    }
+    else {
+        this.workspacesButton = null;
+    }
 
-    Main.panel.addToStatusArea('applicationsiconmenu', this.showAppsButton, 0, 'left');
-    Main.panel.addToStatusArea('activitiesiconmenu', this.workspacesButton, 1, 'left');
+    if (this.showAppsButton != null || this.workspacesButton !=null ) {
+        Main.overview.viewSelector._animateIn = _animateIn;
+        Main.overview.viewSelector._animateOut = _animateOut;
+    }
+
 }
+
 
 function disable()
 {
-    this.showAppsButton.destroy();
-    this.workspacesButton.destroy();
+    if (this.showAppsButton != null) {
+        this.showAppsButton.destroy();
+    }
+
+    if (this.workspacesButton != null) {
+        this.workspacesButton.destroy();
+    }
+
     this.dash.showShowAppsButton();
     this.activities.container.show();
 }

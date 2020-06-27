@@ -73,8 +73,8 @@ function buildPrefsWidget() {
     initTranslations();
     let frame = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, border_width: 10, spacing: 10 });
 
-    frame.add(buildSelector('applications-view', _("Show for Applications"), { 'icon': _("Icon"), 'text': _("Text"), 'both': _("Icon+Text") }));
-    frame.add(buildSelector('activities-view', _("Show for Activities"), { 'icon': _("Icon"), 'text': _("Text"), 'both': _("Icon+Text") }));
+    frame.add(buildSelector('applications-view', _("Show for Applications"), { 'icon': _("Icon"), 'text': _("Text"), 'both': _("Icon+Text"), 'hide': _("Hide") }));
+    frame.add(buildSelector('activities-view', _("Show for Activities"), { 'icon': _("Icon"), 'text': _("Text"), 'both': _("Icon+Text"), 'hide': _("Hide") }));
     frame.add(buildSwitcher('animate-show-apps', _("Show Animate to Apps")));
 
     frame.show_all();
