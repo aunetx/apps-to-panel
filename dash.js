@@ -18,8 +18,10 @@ const Dash = new Lang.Class({
     },
 
     hideShowAppsButton: function () {
-        this._dash.showAppsButton.hide()
-        this._dash.showAppsButton.set_width(0)
-        this._dash.showAppsButton.set_height(0)
+        if (!this._dash.constructor.name == "DashToDock_MyDash") {
+            this._dash.showAppsButton.hide()
+            this._dash.showAppsButton.set_width(0)
+            this._dash.showAppsButton.set_height(0)
+        }
     }
 });
