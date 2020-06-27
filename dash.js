@@ -18,7 +18,7 @@ const Dash = new Lang.Class({
     },
 
     hideShowAppsButton: function () {
-        if (!this._dash.constructor.name == "DashToDock_MyDash") {
+        if (this._dash.constructor.name != "DashToDock_MyDash") {
             this._dash.showAppsButton.hide()
             this._dash.showAppsButton.set_width(0)
             this._dash.showAppsButton.set_height(0)
